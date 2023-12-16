@@ -9,7 +9,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-const apiKey = '8030bfbb1e44911e550ce532d5496706'; // replace weather api and url of the server that you use
+const apiKey = 'weather api using openweathermap api '; // replace weather api and url of the server that you use
 
 app.post('/getWeather', async (req, res) => {
     try {
