@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather App</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: rgb(196, 237, 250); /* Set the body background color to light blue */
+            }
+
+        #weatherForm {
+            text-align: center;
+            background-color: white; /* Set the weather form background color to white */
+            padding: 20px; /* Optional: Add padding for better visual appeal */
+            }
+            
+    </style>
+</head>
+<body>
+    <div id="weatherForm">
+        <h1>Weather App</h1>
+        <form onsubmit="getWeather(); return false;">
+            <label for="cityInput">Enter cities (,): </label>
+            <input type="text" id="cityInput" />
+            <br><br>
+            <button type="submit">Get Temperature</button>
+        </form>
+        <div id="weatherResults"></div>
+    </div>
+
+    <script>
+        async function getWeather() {
+            const citiesInput = document.getElementById('cityInput').value;
+            const cities = citiesInput.split(',').map(city => city.trim());
+
+            const response = await fetch('http://localhost:3000/getWeather', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ cities }),
+            });
+
+            const result = await response.json();
+            displayWeather(result.temperature);
+        }
+
+        function displayWeather(temperature) {
+            const weatherResults = document.getElementById('weatherResults');
+            weatherResults.innerHTML = '';
+
+            temperature.forEach(temp => {
+                const div = document.createElement('div');
+                
+                const cityElement = document.createElement('p');
+                cityElement.textContent = `City: ${temp.city}`;
+                
+                const temperatureElement = document.createElement('p');
+                temperatureElement.textContent = `Temperature: ${temp.temperature}`;
+
+                div.appendChild(cityElement);
+                div.appendChild(temperatureElement);
+
+                weatherResults.appendChild(div);
+            });
+        }
+    </script>
+</body>
+</html>
